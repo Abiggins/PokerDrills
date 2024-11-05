@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poker Hands Grid</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="header">
+        <h1>Poker Hands Grid</h1>
+        <input type="text" id="range-name" placeholder="Enter range name" />
+        <input type="file" id="upload" accept=".json" />
+        <button id="generate">Generate</button>
+    </div>
+    <div id="grid-container">
+        <div id="grid-header">
+            <h2>Range in Play</h2>
+            <span id="chevron" class="chevron">&#9660;</span> 
+        </div>
+        <div id="grid"></div>
+    </div>
+    <script src="mvp.js"></script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+/* Prevent text selection */
+body {
+    user-select: none;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Header styling */
+#header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border-bottom: 1px solid #444;
+}
+
+#header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+#header input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+#header button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #555;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+#header button:hover {
+    background-color: #777;
+}
+
+#header label {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #555;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    margin-left: 10px;
+}
+
+#header label:hover {
+    background-color: #777;
+}
+/* Grid header styling */
+#grid-header {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#chevron {
+    font-size: 24px;
+    transition: transform 0.3s;
+}
+
+/* Rotate chevron when expanded */
+#grid.expanded + #chevron {
+    transform: rotate(180deg);
+}
+
+/* Grid container styling */
+#grid-container {
+    padding: 10px;
+    background-color: #444;
+    border-radius: 8px;
+    margin: 10px 20px;
+    cursor: pointer;
+}
+
+/* Initially hide the grid */
+#grid {
+    display: none;
+    margin-top: 10px;
+}
+
+/* Grid styling */
+#grid.expanded {
+    display: grid;
+    grid-template-columns: repeat(13, 1fr);
+    gap: 1px;
+}
+
+/* Button styling */
+.grid-button {
+    padding: 10px;
+    background-color: #666;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    transition: filter 0.3s;
+    font-size: 14px;
+}
+
+.grid-button.raise {
+    background-color: #f55353; /* red */
+}
+
+.grid-button.call {
+    background-color: #5ab966; /* green */
+}
+
+.grid-button.fold {
+    background-color: #3b809b; /* blue */
+}
+
+.grid-button.all-in {
+    background-color: #ab1717; /* darker red */
+}
+
+.grid-button:hover {
+    filter: brightness(75%);
+}
