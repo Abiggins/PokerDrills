@@ -3,6 +3,8 @@ body {
     user-select: none;
     margin: 0;
     font-family: Arial, sans-serif;
+    background-color: #222; /* Dark gray background */
+    color: #fff; /* White text color */
 }
 
 /* Header styling */
@@ -110,22 +112,134 @@ body {
     font-size: 14px;
 }
 
-.grid-button.raise {
+.raise {
     background-color: #f55353; /* red */
 }
 
-.grid-button.call {
+.call {
     background-color: #5ab966; /* green */
 }
 
-.grid-button.fold {
+.fold {
     background-color: #3b809b; /* blue */
 }
 
-.grid-button.all-in {
+.all-in {
     background-color: #ab1717; /* darker red */
 }
 
 .grid-button:hover {
     filter: brightness(75%);
+}
+
+/* Quiz container styling */
+#quiz-container {
+    padding: 20px;
+    background-color: #333;
+    color: #fff;
+    border-radius: 8px;
+    margin: 10px 20px;
+}
+
+#quiz-hand {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+#quiz-options {
+    display: flex;
+    gap: 10px;
+}
+
+.quiz-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.quiz-button:hover {
+    filter: brightness(85%);
+}
+
+#quiz-feedback {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+
+/* Dialog styling */
+.dialog {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.dialog-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.dialog-content p {
+    margin: 0 0 20px;
+}
+
+.dialog-content button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #555;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.dialog-content button:hover {
+    background-color: #777;
+}
+
+
+/* Position selector styling */
+#position-selector {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    margin-bottom: 10px;
+}
+
+#position-selector label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px; /* Smaller padding for smaller buttons */
+    background-color: #555;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#position-selector label:hover {
+    background-color: #777;
+}
+
+#position-selector input[type="radio"] {
+    display: none;
+}
+
+#position-selector input[type="radio"]:checked + label {
+    background-color: #2196F3; /* Different color for selected button */
 }

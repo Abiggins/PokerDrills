@@ -1,4 +1,5 @@
 var pokerHands = {
+    name: "default",
     hands: [
         { cards: "AA", action: "fold" },
         { cards: "AKs", action: "fold" },
@@ -174,21 +175,26 @@ var pokerHands = {
 var isLeftMouseDown = false;
 var isRightMouseDown = false;
 var changedButtons = new Set();
+var streak = 0;
 function createGrid() {
     var grid = document.getElementById('grid');
     if (!grid)
         return;
     grid.innerHTML = ''; // Clear existing grid
     pokerHands.hands.forEach(function (hand, index) {
-        var button = document.createElement('button');
-        button.textContent = hand.cards;
-        button.className = "grid-button ".concat(hand.action);
-        button.addEventListener('mousedown', function (event) { return handleMouseDown(event, index); });
-        button.addEventListener('mouseover', function () { return handleMouseOver(index); });
-        button.addEventListener('contextmenu', function (event) { return handleRightClick(event, index); });
+        var button = createButton(hand, index);
         grid.appendChild(button);
     });
     document.addEventListener('mouseup', handleMouseUp);
+}
+function createButton(hand, index) {
+    var button = document.createElement('button');
+    button.textContent = hand.cards;
+    button.className = "grid-button ".concat(hand.action);
+    button.addEventListener('mousedown', function (event) { return handleMouseDown(event, index); });
+    button.addEventListener('mouseover', function () { return handleMouseOver(index); });
+    button.addEventListener('contextmenu', function (event) { return handleRightClick(event, index); });
+    return button;
 }
 function handleMouseDown(event, index) {
     if (event.button === 0) { // Left mouse button
@@ -238,7 +244,7 @@ function handleRightClick(event, index) {
 }
 function handleGenerateClick() {
     var rangeNameInput = document.getElementById('range-name');
-    var rangeName = rangeNameInput.value.trim() || 'default_range_name';
+    var rangeName = rangeNameInput.value.trim() || 'poker_hands';
     var json = JSON.stringify(pokerHands, null, 2);
     var blob = new Blob([json], { type: 'application/json' });
     var url = URL.createObjectURL(blob);
@@ -282,6 +288,53 @@ function toggleGridVisibility() {
         chevron.innerHTML = grid.classList.contains('expanded') ? '&#9650;' : '&#9660;'; // Upward chevron when expanded
     }
 }
+function getRandomHand() {
+    var randomIndex = Math.floor(Math.random() * pokerHands.hands.length);
+    return pokerHands.hands[randomIndex];
+}
+function displayQuiz() {
+    var quizHandElement = document.getElementById('quiz-hand');
+    var quizFeedbackElement = document.getElementById('quiz-feedback');
+    var streakElement = document.getElementById('streak');
+    if (!quizHandElement || !quizFeedbackElement || !streakElement)
+        return;
+    var randomHand = getRandomHand();
+    quizHandElement.textContent = randomHand.cards;
+    quizFeedbackElement.textContent = '';
+    var quizButtons = document.querySelectorAll('.quiz-button');
+    quizButtons.forEach(function (button) {
+        var newButton = button.cloneNode(true);
+        button.replaceWith(newButton);
+        newButton.addEventListener('click', function () {
+            var action = newButton.getAttribute('data-action');
+            if (action === randomHand.action) {
+                streak++;
+                streakElement.textContent = "Streak: ".concat(streak);
+                displayQuiz(); // Move to the next card
+            }
+            else {
+                streak = 0;
+                streakElement.textContent = "Streak: ".concat(streak);
+                quizFeedbackElement.textContent = "Incorrect! The correct action is ".concat(randomHand.action, ".");
+                quizFeedbackElement.style.color = 'red';
+                showDialog("Incorrect! The correct action is ".concat(randomHand.action, ".")); // Show custom dialog
+            }
+        });
+    });
+}
+function showDialog(message) {
+    var dialog = document.getElementById('dialog');
+    var dialogMessage = document.getElementById('dialog-message');
+    var dialogOkButton = document.getElementById('dialog-ok');
+    if (dialog && dialogMessage && dialogOkButton) {
+        dialogMessage.textContent = message;
+        dialog.style.display = 'flex';
+        dialogOkButton.onclick = function () {
+            dialog.style.display = 'none';
+            displayQuiz(); // Move to the next card after dialog is accepted
+        };
+    }
+}
 document.addEventListener('DOMContentLoaded', function () {
     createGrid();
     var generateButton = document.getElementById('generate');
@@ -292,8 +345,9 @@ document.addEventListener('DOMContentLoaded', function () {
     if (uploadInput) {
         uploadInput.addEventListener('change', handleFileUpload);
     }
-    var gridContainer = document.getElementById('grid-header');
-    if (gridContainer) {
-        gridContainer.addEventListener('click', toggleGridVisibility);
+    var gridHeader = document.getElementById('grid-header');
+    if (gridHeader) {
+        gridHeader.addEventListener('click', toggleGridVisibility);
     }
+    displayQuiz();
 });

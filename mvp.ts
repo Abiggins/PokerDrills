@@ -173,9 +173,11 @@ const pokerHands =  {
     ]
 };
 
+
 let isLeftMouseDown = false;
 let isRightMouseDown = false;
 let changedButtons = new Set<number>();
+let streak = 0;
 
 function createGrid() {
     const grid = document.getElementById('grid');
@@ -184,16 +186,21 @@ function createGrid() {
     grid.innerHTML = ''; // Clear existing grid
 
     pokerHands.hands.forEach((hand, index) => {
-        const button = document.createElement('button');
-        button.textContent = hand.cards;
-        button.className = `grid-button ${hand.action}`;
-        button.addEventListener('mousedown', (event) => handleMouseDown(event, index));
-        button.addEventListener('mouseover', () => handleMouseOver(index));
-        button.addEventListener('contextmenu', (event) => handleRightClick(event, index));
+        const button = createButton(hand, index);
         grid.appendChild(button);
     });
 
     document.addEventListener('mouseup', handleMouseUp);
+}
+
+function createButton(hand, index) {
+    const button = document.createElement('button');
+    button.textContent = hand.cards;
+    button.className = `grid-button ${hand.action}`;
+    button.addEventListener('mousedown', (event) => handleMouseDown(event, index));
+    button.addEventListener('mouseover', () => handleMouseOver(index));
+    button.addEventListener('contextmenu', (event) => handleRightClick(event, index));
+    return button;
 }
 
 function handleMouseDown(event: MouseEvent, index: number) {
@@ -249,7 +256,7 @@ function handleRightClick(event: MouseEvent, index: number) {
 
 function handleGenerateClick() {
     const rangeNameInput = document.getElementById('range-name') as HTMLInputElement;
-    const rangeName = rangeNameInput.value.trim() || 'default_range_name';
+    const rangeName = rangeNameInput.value.trim() || 'poker_hands';
     const json = JSON.stringify(pokerHands, null, 2);
     const blob = new Blob([json], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -290,7 +297,57 @@ function toggleGridVisibility() {
         chevron.classList.toggle('expanded');
         chevron.innerHTML = grid.classList.contains('expanded') ? '&#9650;' : '&#9660;'; // Upward chevron when expanded
     }
-    
+}
+
+function getRandomHand() {
+    const randomIndex = Math.floor(Math.random() * pokerHands.hands.length);
+    return pokerHands.hands[randomIndex];
+}
+
+function displayQuiz() {
+    const quizHandElement = document.getElementById('quiz-hand');
+    const quizFeedbackElement = document.getElementById('quiz-feedback');
+    const streakElement = document.getElementById('streak');
+    if (!quizHandElement || !quizFeedbackElement || !streakElement) return;
+
+    const randomHand = getRandomHand();
+    quizHandElement.textContent = randomHand.cards;
+    quizFeedbackElement.textContent = '';
+
+    const quizButtons = document.querySelectorAll('.quiz-button');
+    quizButtons.forEach(button => {
+        const newButton = button.cloneNode(true) as HTMLElement;
+        button.replaceWith(newButton);
+        newButton.addEventListener('click', () => {
+            const action = newButton.getAttribute('data-action');
+            if (action === randomHand.action) {
+                streak++;
+                streakElement.textContent = `Streak: ${streak}`;
+                displayQuiz(); // Move to the next card
+            } else {
+                streak = 0;
+                streakElement.textContent = `Streak: ${streak}`;
+                quizFeedbackElement.textContent = `Incorrect! The correct action is ${randomHand.action}.`;
+                quizFeedbackElement.style.color = 'red';
+                showDialog(`Incorrect! The correct action is ${randomHand.action}.`); // Show custom dialog
+            }
+        });
+    });
+}
+function showDialog(message: string) {
+    const dialog = document.getElementById('dialog');
+    const dialogMessage = document.getElementById('dialog-message');
+    const dialogOkButton = document.getElementById('dialog-ok');
+
+    if (dialog && dialogMessage && dialogOkButton) {
+        dialogMessage.textContent = message;
+        dialog.style.display = 'flex';
+
+        dialogOkButton.onclick = () => {
+            dialog.style.display = 'none';
+            displayQuiz(); // Move to the next card after dialog is accepted
+        };
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -303,8 +360,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (uploadInput) {
         uploadInput.addEventListener('change', handleFileUpload);
     }
-    const gridContainer = document.getElementById('grid-header');
-    if (gridContainer) {
-        gridContainer.addEventListener('click', toggleGridVisibility);
+    const gridHeader = document.getElementById('grid-header');
+    if (gridHeader) {
+        gridHeader.addEventListener('click', toggleGridVisibility);
     }
+    displayQuiz();
 });

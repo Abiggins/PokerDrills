@@ -18,7 +18,40 @@
             <h2>Range in Play</h2>
             <span id="chevron" class="chevron">&#9660;</span> 
         </div>
+        <div id="range-options">
+
+            <div id="position-selector">
+                <label><input type="radio" name="position" value="UTG">UTG</label>
+                <label><input type="radio" name="position" value="UTG1">UTG +1</label>
+                <label><input type="radio" name="position" value="MP"> MP</label>
+                <label><input type="radio" name="position" value="LJ"> LJ</label>
+                <label><input type="radio" name="position" value="HJ"> HJ</label>
+                <label><input type="radio" name="position" value="CO"> CO</label>
+                <label><input type="radio" name="position" value="BTN"> BTN</label>
+                <label><input type="radio" name="position" value="SB"> SB</label>
+                <label><input type="radio" name="position" value="BB"> BB</label>
+            </div>
+
+        </div>
         <div id="grid"></div>
+    </div>
+    <div id="quiz-container">
+        <h2>What should you do with this hand?</h2>
+        <div id="quiz-hand"></div>
+        <div id="quiz-options">
+            <button class="quiz-button fold" data-action="fold">Fold</button>
+            <button class="quiz-button call" data-action="call">Call</button>
+            <button class="quiz-button raise" data-action="raise">Raise</button>
+            <button class="quiz-button all-in" data-action="all-in">All-in</button>
+        </div>
+        <div id="quiz-feedback"></div>
+        <div id="streak">Streak: 0</div>
+    </div>
+    <div id="dialog" class="dialog">
+        <div class="dialog-content">
+            <p id="dialog-message"></p>
+            <button id="dialog-ok">OK</button>
+        </div>
     </div>
     <script src="mvp.js"></script>
 </body>
