@@ -193,6 +193,7 @@ body {
 
 .dialog-content p {
     margin: 0 0 20px;
+    color: #000000;
 }
 
 .dialog-content button {

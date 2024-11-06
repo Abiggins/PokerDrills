@@ -342,7 +342,6 @@ function showDialog(message: string) {
     if (dialog && dialogMessage && dialogOkButton) {
         dialogMessage.textContent = message;
         dialog.style.display = 'flex';
-
         dialogOkButton.onclick = () => {
             dialog.style.display = 'none';
             displayQuiz(); // Move to the next card after dialog is accepted
